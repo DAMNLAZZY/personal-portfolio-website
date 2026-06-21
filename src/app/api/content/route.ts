@@ -14,18 +14,18 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, title, about } = body;
+    const { name, title, about, image_url, resume_url } = body;
     const db = initDb();
     
     // Check if exists
     const existing = db.prepare('SELECT id FROM general_info LIMIT 1').get() as { id: number } | undefined;
     
     if (existing) {
-      const stmt = db.prepare('UPDATE general_info SET name = ?, title = ?, about = ? WHERE id = ?');
-      stmt.run(name, title, about, existing.id);
+      const stmt = db.prepare('UPDATE general_info SET name = ?, title = ?, about = ?, image_url = ?, resume_url = ? WHERE id = ?');
+      stmt.run(name, title, about, image_url, resume_url, existing.id);
     } else {
-      const stmt = db.prepare('INSERT INTO general_info (name, title, about) VALUES (?, ?, ?)');
-      stmt.run(name, title, about);
+      const stmt = db.prepare('INSERT INTO general_info (name, title, about, image_url, resume_url) VALUES (?, ?, ?, ?, ?)');
+      stmt.run(name, title, about, image_url, resume_url);
     }
     
     return NextResponse.json({ success: true });

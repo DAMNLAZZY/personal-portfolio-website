@@ -41,3 +41,19 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, name, level, category } = body;
+    if (!id) throw new Error('ID required for updating');
+
+    const db = initDb();
+    const stmt = db.prepare('UPDATE skills SET name = ?, level = ?, category = ? WHERE id = ?');
+    stmt.run(name, level, category || '', id);
+    
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
