@@ -3,7 +3,8 @@ import path from 'path';
 import fs from 'fs';
 
 // Initialize SQLite database
-const dbPath = path.resolve(process.cwd(), 'portfolio.db');
+const dbFolder = process.env.DATA_DIR || process.cwd();
+const dbPath = path.resolve(dbFolder, 'portfolio.db');
 const db = new Database(dbPath, { verbose: console.log });
 
 let isInitialized = false;

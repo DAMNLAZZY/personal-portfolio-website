@@ -156,8 +156,20 @@ export default function AdminDashboard() {
           <button className={activeTab === 'certifications' ? 'active' : ''} onClick={() => setActiveTab('certifications')}>Certifications</button>
           <button className={activeTab === 'blog' ? 'active' : ''} onClick={() => setActiveTab('blog')}>Daily Blog</button>
         </div>
-        <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
+        <div style={{ marginTop: 'auto', paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <a href="/" className="btn btn-primary" style={{ width: '100%' }}>View Site</a>
+          <button 
+            onClick={async () => {
+              if (confirm('Are you sure you want to log out?')) {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/admin/login';
+              }
+            }}
+            className="btn btn-danger" 
+            style={{ width: '100%' }}
+          >
+            Logout
+          </button>
         </div>
       </div>
       
